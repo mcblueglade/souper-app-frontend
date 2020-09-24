@@ -9,20 +9,17 @@ import Palette from "@material-ui/icons/Palette";
 import Favorite from "@material-ui/icons/Favorite";
 // core components
 
-//C:\CPrograms\souper-app-frontend\src\components\MaterialKitComponents\Grid\GridContainer.js
 import Button from "./MaterialKitComponents/CustomButtons/Button.js";
-import GridContainer from "../components/MaterialKitComponents/Grid/GridContainer.js";
-import GridItem from "../components/MaterialKitComponents/Grid/GridItem.js";
+import GridContainer from "./MaterialKitComponents/Grid/GridContainer.js";
+import GridItem from "./MaterialKitComponents/Grid/GridItem.js";
 
-//import NavPills from "./MaterialKitComponents/NavPills/NavPills.js";
-//import Parallax from "./MaterialKitComponents/Parallax/Parallax.js";
-
-//import profile from "assets/img/faces/christian.jpg";
-
+import FoodPic from "assets/img/purple-banana.jpg";
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
 const useStyles = makeStyles(styles);
+
+
 
 export default function AddEditItem(props) {
   const classes = useStyles();
@@ -40,18 +37,23 @@ export default function AddEditItem(props) {
         <div>
           <div className={classes.container}>
             <GridContainer justify="center">
-              <GridItem xs={6}  className={classes.navWrapper}>
-               <h3>This is number one!</h3>
+              <GridItem xs={6} className={classes.navWrapper}>
+                <img        
+                    src={FoodPic}
+                    alt="Bananas"
+                    className={navImageClasses}  
+                />
               </GridItem>
-              <GridItem xs={6}  className={classes.navWrapper}>
+              <GridItem xs={6} className={classes.navWrapper}>
                <h3>This is number two!</h3>
               </GridItem>
             </GridContainer>
+
             <GridContainer justify="center">
               <GridItem xs={6} className={classes.navWrapper}>
                <h3>This is number one!</h3>
               </GridItem>
-              <GridItem xs={6}  className={classes.navWrapper}>
+              <GridItem xs={6} className={classes.navWrapper}>
                <h3>This is number two!</h3>
               </GridItem>
             </GridContainer>
