@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from "react";
+import { UserContext } from "../providers/UserProvider";
+import { auth } from "../../firebase";
 // nodejs library that concatenates classes
 import classNames from 'classnames';
 // nodejs library to set properties for components
@@ -19,6 +21,8 @@ import styles from 'assets/jss/material-kit-react/components/headerStyle.js';
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
+  const user = useContext(UserContext);
+  const { photoURL, displayName, email } = user;
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -44,8 +48,9 @@ export default function Header(props) {
               {leftLinks}
             </Hidden>
           ) : (
-            brandComponent
-          )}
+              brandComponent
+            )}
+          {displayName} ({email})
         </div>
         <Hidden smDown implementation='css'>
           {rightLinks}
@@ -76,6 +81,7 @@ export default function Header(props) {
           </div>
         </Drawer>
       </Hidden>
+      <button className="w-full py-3 bg-red-600 mt-4 text-white" onClick={() => { auth.signOut() }}>Sign out</button>
     </AppBar>
   );
 }

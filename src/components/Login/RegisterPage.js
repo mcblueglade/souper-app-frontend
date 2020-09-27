@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -31,6 +31,27 @@ const useStyles = makeStyles(styles);
 
 export default function RegisterPage({ registerInputs }) {
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [error, setError] = useState(null);
+  const createUserWithEmailAndPasswordHandler = (event, email, password) => {
+    console.log("create account")
+    event.preventDefault();
+    setEmail("");
+    setPassword("");
+    setDisplayName("");
+  };
+  const onChangeHandler = event => {
+    const { name, value } = event.currentTarget;
+    if (name === "userEmail") {
+      setEmail(value);
+    } else if (name === "userPassword") {
+      setPassword(value);
+    } else if (name === "displayName") {
+      setDisplayName(value);
+    }
+  };
   setTimeout(function () {
     setCardAnimation('');
   }, 700);
@@ -53,6 +74,7 @@ export default function RegisterPage({ registerInputs }) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color='rose' className={classes.cardHeader}>
+                    {error !== null && { error }}
                     <h2>Register</h2>
                     <div className={classes.socialLine}>
                       <Button
@@ -94,6 +116,8 @@ export default function RegisterPage({ registerInputs }) {
                           fullWidth: true,
                         }}
                         inputProps={{
+                          name: `${input.id}`,
+                          onChange: (event) => onChangeHandler(event),
                           type: `${input.type}`,
                           endAdornment: (
                             <InputAdornment position='start'>
@@ -117,7 +141,9 @@ export default function RegisterPage({ registerInputs }) {
                     <CheckboxGeneric>
                       <strong>Terms And Conditions</strong>
                     </CheckboxGeneric>
-                    <Button fullWidth size='lg' color='rose'>
+                    <Button fullWidth size='lg' color='rose' onClick={event => {
+                      createUserWithEmailAndPasswordHandler(event, email, password);
+                    }}>
                       Create Account
                     </Button>
                   </CardBody>

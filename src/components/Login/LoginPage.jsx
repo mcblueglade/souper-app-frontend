@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,10 +18,32 @@ import CustomInput from '../MaterialKitComponents/CustomInput/CustomInput.js';
 
 import styles from '../../assets/jss/material-kit-react/views/loginPage.js';
 import image from '../../assets/img/board.jpg';
+import { signInWithGoogle } from 'firebase.js';
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const signInWithEmailAndPasswordHandler =
+    (event, email, password) => {
+      console.log("sign in clicked")
+      event.preventDefault();
+    };
+
+  const onChangeHandler = (event) => {
+    console.log(value)
+    const { name, value } = event.currentTarget;
+
+    if (name === 'userEmail') {
+      setEmail(value);
+    }
+    else if (name === 'userPassword') {
+      setPassword(value);
+    }
+  };
+
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden');
   setTimeout(() => {
     setCardAnimation('');
@@ -37,11 +59,12 @@ export default function LoginPage() {
         }}
       >
         <div className={classes.container}>
-          <GridContainer justify="center">
+          < GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="rose" className={classes.cardHeader}>
+                    {error !== null && { error }}
                     <h4>Login</h4>
                     <div className={classes.socialLine}>
                       <Button
@@ -67,7 +90,7 @@ export default function LoginPage() {
                         href="#pablo"
                         target="_blank"
                         color="transparent"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={(e) => signInWithGoogle()}
                       >
                         <i className="fab fa-google-plus-g" />
                       </Button>
@@ -76,11 +99,14 @@ export default function LoginPage() {
                   <CardBody>
                     <CustomInput
                       labelText="Email..."
-                      id="email"
+                      id="userEmail"
+                      name="userEmail"
                       formControlProps={{
                         fullWidth: true,
                       }}
                       inputProps={{
+                        name: "userEmail",
+                        onChange: (event) => onChangeHandler(event),
                         type: 'email',
                         endAdornment: (
                           <InputAdornment position="end">
@@ -91,11 +117,13 @@ export default function LoginPage() {
                     />
                     <CustomInput
                       labelText="Password"
-                      id="pass"
+                      id="userPassword"
                       formControlProps={{
                         fullWidth: true,
                       }}
                       inputProps={{
+                        name: "userPassword",
+                        onChange: (event) => onChangeHandler(event),
                         type: 'password',
                         endAdornment: (
                           <InputAdornment position="end">
@@ -116,14 +144,12 @@ export default function LoginPage() {
                     </Link>
                   </GridContainer>
                   <CardFooter className={classes.cardFooter}>
-                    <Button variant="contained" color="rose" size="lg">
-                      <Link to="/">
-                        LOG IN
-                      </Link>
+                    <Button fullWidth variant="contained" color="rose" size="lg" onClick={(event) => { signInWithEmailAndPasswordHandler(event, email, password) }}>
+                      LOG IN
                     </Button>
                   </CardFooter>
                   <CardFooter className={classes.cardFooter}>
-                    <Button variant="contained" size="lg">
+                    <Button fullWidth variant="contained" size="lg">
                       <Link to="/register">
                         REGISTER
                       </Link>
@@ -135,6 +161,6 @@ export default function LoginPage() {
           </GridContainer>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
