@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+
+import { auth } from "../../firebase";
+import { generateUserDocument } from 'firebase.js';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -35,9 +38,16 @@ export default function RegisterPage({ registerInputs }) {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState(null);
-  const createUserWithEmailAndPasswordHandler = (event, email, password) => {
-    console.log("create account")
+  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
     event.preventDefault();
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(email, password);
+      generateUserDocument(user, { displayName });
+    }
+    catch (error) {
+      setError('Error Signing up with email and password');
+    }
+
     setEmail("");
     setPassword("");
     setDisplayName("");
@@ -74,7 +84,7 @@ export default function RegisterPage({ registerInputs }) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color='rose' className={classes.cardHeader}>
-                    {error !== null && { error }}
+                    {/* {error !== null && { error }} */}
                     <h2>Register</h2>
                     <div className={classes.socialLine}>
                       <Button

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { auth } from "../../firebase";
+
 import { Link } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,11 +28,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const signInWithEmailAndPasswordHandler =
-    (event, email, password) => {
-      console.log("sign in clicked")
-      event.preventDefault();
-    };
+  const signInWithEmailAndPasswordHandler = (event, email, password) => {
+    event.preventDefault();
+    auth.signInWithEmailAndPassword(email, password).catch(error => {
+      setError("Error signing in with password and email!");
+      console.error("Error signing in with password and email", error);
+    });
+  };
 
   const onChangeHandler = (event) => {
     console.log(value)
@@ -59,12 +63,12 @@ export default function LoginPage() {
         }}
       >
         <div className={classes.container}>
-          < GridContainer justify="center">
+          <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="rose" className={classes.cardHeader}>
-                    {error !== null && { error }}
+                    {/* {error !== null && { error }} */}
                     <h4>Login</h4>
                     <div className={classes.socialLine}>
                       <Button
@@ -137,7 +141,7 @@ export default function LoginPage() {
                     />
                   </CardBody>
                   <GridContainer justify="center">
-                    <Link to="/ForgottenPassword" className={classes.link}>
+                    <Link to="/forgotten" className={classes.link}>
                       <Button simple color="info" size="lg" to="/ForgottenPassword">
                         FORGOTTEN PASSWORD?
                       </Button>

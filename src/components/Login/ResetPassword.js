@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { auth } from "../../firebase";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -33,6 +34,15 @@ export default function ResetPassword(props) {
   };
   const sendResetEmail = event => {
     event.preventDefault();
+    auth
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        setEmailHasBeenSent(true);
+        setTimeout(() => { setEmailHasBeenSent(false) }, 3000);
+      })
+      .catch(() => {
+        setError("Error resetting password");
+      });
   };
   setTimeout(function () {
     setCardAnimation("");
@@ -120,7 +130,9 @@ export default function ResetPassword(props) {
 
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button fullWidth to="#TODO_Send email" variant="contained" color="rose" size="lg">
+                    <Button fullWidth to="#TODO_Send email" variant="contained" color="rose" size="lg" onClick={event => {
+                      sendResetEmail(event);
+                    }}>
                       Send me a reset link
                 </Button>
                   </CardFooter>

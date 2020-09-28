@@ -31,7 +31,17 @@ function Application() {
             </BrowserRouter>
             :
             <BrowserRouter>
-                <LoginPage />
+                <Switch>
+                    <Route path='/login'>
+                        <LoginPage />
+                    </Route>
+                    <Route path='/register'>
+                        <RegisterPage registerInputs={registerInputs} />
+                    </Route>
+                    <Route path='/forgotten'>
+                        <ResetPassword />
+                    </Route>
+                </Switch>
             </BrowserRouter>
         // <BrowserRouter>
         //     <Switch>
